@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace labwork1
+namespace labwork2
 {
     class Program
     {
