@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Numerics;
 using System.Linq;
-
+using System.Collections.Generic;
+using System.Collections;
 
 namespace labwork2
 {
-    public class V2DataOnGrid : V2Data
+    public class V2DataOnGrid : V2Data, IEnumerable<DataItem>
     {
         public Grid1D[] Param_grid;
         public Complex[,] Values_field;
@@ -22,7 +23,6 @@ namespace labwork2
             };
             Values_field = new Complex[num_nodes_grid[0], num_nodes_grid[1]];
         }
-
         public static implicit operator V2DataCollection(V2DataOnGrid v2_data_on_grid)
         {
             V2DataCollection v2_data_collection = new V2DataCollection(v2_data_on_grid.Freq_field,
@@ -40,7 +40,6 @@ namespace labwork2
 
             return v2_data_collection;
         }
-
         public void InitRandom(double minValue, double maxValue)
         {
             Values_field = new Complex[Param_grid[0].Num_nodes_grid, Param_grid[1].Num_nodes_grid];
@@ -70,10 +69,29 @@ namespace labwork2
             string str = ToString();
             for (int i = 0; i < Param_grid[0].Num_nodes_grid; ++i) {
                 for (int j = 0; j < Param_grid[1].Num_nodes_grid; ++j) {
-                    str += ($"Value field: {Values_field[i, j]} X: {Param_grid[0].Step_grid * i} Y: {Param_grid[0].Step_grid * j}\n");
+                    str += ($"Value field: {Values_field[i, j]} X: {Param_grid[0].Step_grid * i} Y: {Param_grid[1].Step_grid * j}\n");
                 }
             }
             return str;
+        }
+        public override string ToLongString(string format)
+        {
+            string str = ToString();
+            for (int i = 0; i < Param_grid[0].Num_nodes_grid; ++i) {
+                for (int j = 0; j < Param_grid[1].Num_nodes_grid; ++j) {
+                    str += ($"Value field: {Values_field[i, j].ToString(format)} X: {String.Format(format, Param_grid[0].Step_grid * i)} " +
+                        $"Y: {String.Format(format, Param_grid[0].Step_grid * j)}\n");
+                }
+            }
+            return str;
+        }
+        public override IEnumerator<DataItem> GetEnumerator()
+        {
+            for (int i = 0; i < Param_grid[0].Num_nodes_grid; ++i) {
+                for (int j = 0; j < Param_grid[1].Num_nodes_grid; ++j) {
+                    yield return new DataItem(Values_field[i, j], new Vector2((float)Param_grid[0].Step_grid * i, (float)Param_grid[1].Step_grid * j));
+                }
+            }
         }
     }
 }

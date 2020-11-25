@@ -1,6 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-
+using System.Linq;
 
 namespace labwork2
 {
@@ -45,6 +46,8 @@ namespace labwork2
 
             return str;
         }
+        public double Averege => ListData.Average(field => Math.Abs(field.Freq_field));
+
         IEnumerator IEnumerable.GetEnumerator()
         {
             return ((IEnumerable)ListData).GetEnumerator();

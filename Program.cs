@@ -9,7 +9,11 @@ namespace labwork2
         {
             Console.WriteLine("1:");
             V2DataOnGrid data_on_grid_1 = new V2DataOnGrid(0, "New V2 data on grid", new double[] { 0.01, 0.01 }, new int[] { 5, 5 });
-            Console.WriteLine(data_on_grid_1.ToLongString());
+            //Console.WriteLine(data_on_grid_1.ToLongString());
+            foreach (DataItem elem in data_on_grid_1) {
+                Console.WriteLine(elem.ToString() + " !!!\n");
+            }
+            /*
             Console.WriteLine((((V2DataCollection)data_on_grid_1).ToLongString() + "\n"));
             Console.WriteLine("2:");
             V2MainCollection main_collection = new V2MainCollection();
@@ -23,6 +27,7 @@ namespace labwork2
                 }
                 Console.WriteLine("\n");
             }
+            */
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Numerics;
 
 
 namespace labwork2
@@ -16,6 +19,9 @@ namespace labwork2
         public override string ToString() => $"Value of the electromagnetic field: {Value_field}\n" +
             $"Point coordinates: {Coord_field}\n";
 
+        public string ToString(string format) => $"Value of the electromagnetic field: {Value_field.ToString(format)}\n" +
+            $"Point coordinates: {Coord_field.ToString(format)}\n";
+
     }
 
     public struct Grid1D
@@ -29,10 +35,10 @@ namespace labwork2
             Num_nodes_grid = num_nodes_grid;
         }
         public override string ToString() => $"Grid step: {Step_grid}\nNumber of grid nodes: {Num_nodes_grid}\n";
+        public string ToString(string format) => $"Grid step: {String.Format(format, Step_grid)}\nNumber of grid nodes: {Num_nodes_grid}\n";
     }
 
-
-    public abstract class V2Data
+    public abstract class V2Data: IEnumerable<DataItem>
     {
         public double Freq_field { get; set; }
         public string Description { get; set; }
@@ -44,6 +50,12 @@ namespace labwork2
         }
         public abstract Complex[] NearAverage(float eps);
         public abstract string ToLongString();
+        public abstract string ToLongString(string format);
         public override string ToString() => $"Frequency field: {Freq_field}\n{Description}\n";
+        public abstract IEnumerator<DataItem> GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

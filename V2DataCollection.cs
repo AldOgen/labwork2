@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Numerics;
 using System.Linq;
-
+using System.IO;
+using System.Collections;
 
 namespace labwork2
 {
-    public class V2DataCollection : V2Data
+    public class V2DataCollection : V2Data, IEnumerable<DataItem>
     {
         public List<DataItem> Values_field { get; set; }
         private static readonly Random Rand = new Random(42);
@@ -14,6 +15,24 @@ namespace labwork2
         public V2DataCollection(double freq_field, string description) : base(freq_field, description)
         {
             Values_field = new List<DataItem>();
+        }
+
+        public V2DataCollection(string filename, double freq_field, string description) : base(freq_field, description)
+        {
+            try {
+                using StreamReader input = new StreamReader(filename, System.Text.Encoding.Default);
+                string raw_line;
+                while ((raw_line = input.ReadLine()) != null) {
+                    var param = raw_line.Split(';').Select(col => col.Split(' '))
+                        .Select(elem => new DataItem(new Complex(double.Parse(elem[0]), double.Parse(elem[1])),
+                                                     new Vector2(float.Parse(elem[2]), float.Parse(elem[3]))));
+                    foreach (var ValueTuple in param) {
+                        Values_field.Add(ValueTuple);
+                    }
+                }
+            } catch (Exception exp) {
+                Console.WriteLine(exp.Message);
+            }
         }
 
         public void InitRandom(int nItems,
@@ -30,7 +49,6 @@ namespace labwork2
                 Values_field.Add(val_field);
             }
         }
-
         public override Complex[] NearAverage(float eps)
         {
             double real_mean_val = 0.0;
@@ -49,9 +67,22 @@ namespace labwork2
         {
             string str = ToString();
             foreach (DataItem val in Values_field) {
-                str += val;
+                str += val.ToString();
             }
             return str;
+        }
+
+        public override string ToLongString(string format)
+        {
+            string str = ToString();
+            foreach (DataItem val in Values_field) {
+                str += val.ToString(format);
+            }
+            return str;
+        }
+        public override IEnumerator<DataItem> GetEnumerator()
+        {
+            return Values_field.GetEnumerator();
         }
     }
 }
