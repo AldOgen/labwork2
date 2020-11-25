@@ -49,7 +49,7 @@ namespace labwork2
         }
         public double Averege => (from data in ListData
                                   from val in data
-                                  select Complex.Abs(val.Value_field)).ToArray().Average();
+                                  select Complex.Abs(val.Value_field)).Average();
         public IEnumerable<DataItem> MaxDeviation => (from data in ListData
                                                       from val in data
                                                       orderby Complex.Abs(val.Value_field) - Averege
