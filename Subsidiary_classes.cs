@@ -18,7 +18,6 @@ namespace labwork2
         }
         public override string ToString() => $"Value of the electromagnetic field: {Value_field}\n" +
             $"Point coordinates: {Coord_field}\n";
-
         public string ToString(string format) => $"Value of the electromagnetic field: {Value_field.ToString(format)}\n" +
             $"Point coordinates: {Coord_field.ToString(format)}\n";
 

@@ -16,25 +16,28 @@ namespace labwork2
         {
             Values_field = new List<DataItem>();
         }
-
-        public V2DataCollection(string filename, double freq_field, string description) : base(freq_field, description)
+        public V2DataCollection(string filename) : base(0.0, "")
         {
+            Values_field = new List<DataItem>();
             try {
                 using StreamReader input = new StreamReader(filename, System.Text.Encoding.Default);
                 string raw_line;
+                var parser_base = input.ReadLine().Split(';');
+                Freq_field = double.Parse(parser_base[0]);
+                Description = parser_base[1];
                 while ((raw_line = input.ReadLine()) != null) {
-                    var param = raw_line.Split(';').Select(col => col.Split(' '))
+                    var parser = raw_line.Split(';').Select(col => col.TrimStart(' ').TrimEnd(' ')).Select(col => col.Split(' '))
                         .Select(elem => new DataItem(new Complex(double.Parse(elem[0]), double.Parse(elem[1])),
                                                      new Vector2(float.Parse(elem[2]), float.Parse(elem[3]))));
-                    foreach (var ValueTuple in param) {
+                    foreach (var ValueTuple in parser) {
                         Values_field.Add(ValueTuple);
                     }
                 }
+
             } catch (Exception exp) {
                 Console.WriteLine(exp.Message);
             }
         }
-
         public void InitRandom(int nItems,
                                float xmax,
                                float ymax,
@@ -61,7 +64,6 @@ namespace labwork2
                     where Math.Abs(val.Value_field.Real - real_mean_val) < eps
                     select val.Value_field).ToArray();
         }
-
         public override string ToString() => $"Type: V2DataCollection\n{base.ToString()}\nValues count: {Values_field.Count}\n";
         public override string ToLongString()
         {
@@ -71,7 +73,6 @@ namespace labwork2
             }
             return str;
         }
-
         public override string ToLongString(string format)
         {
             string str = ToString();

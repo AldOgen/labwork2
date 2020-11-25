@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace labwork2
 {
@@ -46,8 +47,19 @@ namespace labwork2
 
             return str;
         }
-        public double Averege => ListData.Average(field => Math.Abs(field.Freq_field));
-
+        public double Averege => (from data in ListData
+                                  from val in data
+                                  select Complex.Abs(val.Value_field)).ToArray().Average();
+        public IEnumerable<DataItem> MaxDeviation => (from data in ListData
+                                                      from val in data
+                                                      orderby Complex.Abs(val.Value_field) - Averege
+                                                      group val by val.Value_field into gr
+                                                      select gr).Last();
+        public IEnumerable<Vector2> DuplicateMeasurement => from data in ListData
+                                                            from val in data
+                                                            group val.Coord_field by val.Coord_field into gr
+                                                            where gr.Count() > 1
+                                                            select gr.First();
         IEnumerator IEnumerable.GetEnumerator()
         {
             return ((IEnumerable)ListData).GetEnumerator();
