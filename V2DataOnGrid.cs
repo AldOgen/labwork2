@@ -6,7 +6,7 @@ using System.Collections;
 
 namespace labwork2
 {
-    public class V2DataOnGrid : V2Data, IEnumerable<DataItem>
+    public class V2DataOnGrid : V2Data
     {
         public Grid1D[] Param_grid;
         public Complex[,] Values_field;

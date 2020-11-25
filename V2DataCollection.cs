@@ -7,7 +7,7 @@ using System.Collections;
 
 namespace labwork2
 {
-    public class V2DataCollection : V2Data, IEnumerable<DataItem>
+    public class V2DataCollection : V2Data
     {
         public List<DataItem> Values_field { get; set; }
         private static readonly Random Rand = new Random(42);
