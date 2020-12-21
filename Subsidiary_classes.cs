@@ -6,7 +6,7 @@ using System.Numerics;
 
 namespace labwork2
 {
-    public struct DataItem
+    public struct DataItem : IComparable<DataItem>
     {
         public Complex Value_field { get; set; }
         public Vector2 Coord_field { get; set; }
@@ -20,6 +20,15 @@ namespace labwork2
             $"Point coordinates: {Coord_field}\n";
         public string ToString(string format) => $"Value of the electromagnetic field: {Value_field.ToString(format)}\n" +
             $"Point coordinates: {Coord_field.ToString(format)}\n";
+        public int CompareTo(DataItem other)
+        {
+            if (Coord_field.X == other.Coord_field.X) {
+                return Math.Sign(Coord_field.Y - other.Coord_field.Y);
+            } else {
+                return Math.Sign(Coord_field.X - other.Coord_field.X);
+            }
+                
+        }
 
     }
 

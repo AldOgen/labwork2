@@ -27,12 +27,12 @@ namespace labwork2
 
         public void AddDefaults()
         {
-            for (int i = 0; i < 3; ++i) {
-                V2DataOnGrid v2_data_on_grid = new V2DataOnGrid(0.0, "Default info", new double[] { 0.01, 0.01 }, new int[] { 5, 5 });
+            for (int i = 0; i < 2; ++i) {
+                V2DataOnGrid v2_data_on_grid = new V2DataOnGrid(0.0, "Default info", new double[] { 0.01, 0.01 }, new int[] { 3, 3 });
                 v2_data_on_grid.InitRandom(-10.0f, 10.0f);
                 ListData.Add(v2_data_on_grid);
                 V2DataCollection v2_data_collection = new V2DataCollection(0.0, "Default info");
-                v2_data_collection.InitRandom(5, 10.0f, 10.0f, -10.0f, 10.0f);
+                v2_data_collection.InitRandom(3, 10.0f, 10.0f, -10.0f, 10.0f);
                 ListData.Add(v2_data_collection);
             }
         }
@@ -50,13 +50,16 @@ namespace labwork2
         public double Averege => (from data in ListData
                                   from val in data
                                   select Complex.Abs(val.Value_field)).Average();
+
         public IEnumerable<DataItem> MaxDeviation => (from data in ListData
                                                       from val in data
-                                                      orderby Complex.Abs(val.Value_field) - Averege
+                                                      orderby Math.Abs(Complex.Abs(val.Value_field) - Averege)
                                                       group val by val.Value_field into gr
                                                       select gr).Last();
+
         public IEnumerable<Vector2> DuplicateMeasurement => from data in ListData
                                                             from val in data
+                                                            orderby val
                                                             group val.Coord_field by val.Coord_field into gr
                                                             where gr.Count() > 1
                                                             select gr.First();

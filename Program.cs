@@ -7,12 +7,13 @@ namespace labwork2
     {
         static void Main(string[] args)
         {
-            V2DataCollection data_collectiom = new V2DataCollection(@"C:\Users\Admin\Desktop\labwork2\Input.txt");
+            V2DataCollection data_collectiom = new V2DataCollection("../../../Input.txt");
             foreach(var elem in data_collectiom) {
                 Console.Write(elem.ToString("0.00"));
             }
             V2MainCollection main_collection = new V2MainCollection();
-            main_collection.AddDefaults();
+            main_collection.Add(data_collectiom);
+            //main_collection.AddDefaults();
             foreach (V2Data elem in main_collection) {
                 Console.Write(elem.ToLongString("0.00"));
             }
